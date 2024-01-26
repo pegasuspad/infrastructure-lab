@@ -23,6 +23,24 @@ locals {
     gateway           = "10.111.1.1"
     dns_search_domain = "home.pegasuspad.com"
   }
+
+  ansible_init_task = {
+    apt_sources = {
+      "ansible-jammy.list" = {
+        keyid = "6125E2A8C77F2818FB7BD15B93C4A3FD7BB9C367",
+        source ="deb http://ppa.launchpad.net/ansible/ansible/ubuntu jammy main"
+      }
+    }
+    packages = [
+      "ansible",
+      "git",
+      "python3-pip",
+    ]
+    runcmd = [
+      "cp /var/lib/ansible/ssh-keys/* /home/sean/.ssh/",
+      "chown sean:sean /home/sean/.ssh/id_ed25519"
+    ]
+  }
 }
 
 module "config" {
@@ -41,7 +59,7 @@ module "virtual_machine" {
 
   boot_iso_id          = local.iso_ids.ubuntu_2204_20231026
   cloud_init_datastore = local.datastore_cloudinit
-  cloud_init_tasks     = [module.attached_disk_config.cloud_init_task]
+  cloud_init_tasks     = [module.attached_disk_config.cloud_init_task, local.ansible_init_task]
   data_disk_config     = module.attached_disk_config.data.attached_disks
   name                 = local.vm_name
   network_config       = local.network_config
