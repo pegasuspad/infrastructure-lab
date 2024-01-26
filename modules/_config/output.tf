@@ -36,10 +36,16 @@ output "iso_datastore_id" {
 output "iso_sources" {
   description = "Details of all ISOs which are installed to the Proxmox cluster."
   value       = {
+    # due to a bug in the version of cloud-init, this ISO cannot be used with the ansible provisioner
     ubuntu_2204_20231026 = {
       checksum  = "054db2d88c454bb0ad8dfd8883955e3946b57d2b0bf0d023f3ade3c93cdd14e5"
       file_name = "ubuntu-22.04-server-cloudimg-amd64-20231026.img"
       url       = "https://cloud-images.ubuntu.com/releases/22.04/release-20231026/ubuntu-22.04-server-cloudimg-amd64.img" 
+    }
+    ubuntu_2204_20240126 = {
+      checksum  = "9f8a0d84b81a1d481aafca2337cb9f0c1fdf697239ac488177cf29c97d706c25"
+      file_name = "ubuntu-22.04-server-cloudimg-amd64-20240126.img"
+      url       = "https://cloud-images.ubuntu.com/releases/22.04/release-20240126/ubuntu-22.04-server-cloudimg-amd64.img" 
     }
   }
 }
@@ -50,6 +56,7 @@ output "iso_ids" {
   description = "Map of available ISOs. The key is the logical ISO name, and the value is the ID."
   value       = {
     ubuntu_2204_20231026 = "${local.iso_datastore_id}:iso/ubuntu-22.04-server-cloudimg-amd64-20231026.img"
+    ubuntu_2204_20240126 = "${local.iso_datastore_id}:iso/ubuntu-22.04-server-cloudimg-amd64-20240126.img"
   }
 }
 
