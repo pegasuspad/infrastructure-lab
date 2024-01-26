@@ -1,4 +1,11 @@
 locals {
+  // extract useful global config values
+  assigned_vmids      = module.config.vmids
+  config_repository   = module.config.config_repository
+  datastore_ssd       = module.config.proxmox_datastore_ssd
+  proxmox_node        = module.config.proxmox_default_node
+
+  // VM-specific config
   data_vm_name = "lab-ansible-data"
   data_vmid    = lookup(local.assigned_vmids, local.data_vm_name, null)
   datastore    = "local-hdd"
@@ -13,6 +20,10 @@ locals {
       ssd          = local.datastore == local.datastore_ssd
     }
   ]
+}
+
+module "config" {
+  source = "../_config"
 }
 
 module "disk_vm" {
