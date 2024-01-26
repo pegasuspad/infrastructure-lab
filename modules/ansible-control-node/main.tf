@@ -8,12 +8,14 @@ locals {
   datastore_ssd       = module.config.proxmox_datastore_ssd
   iso_ids             = module.config.iso_ids
   proxmox_node        = module.config.proxmox_default_node
+  human_users_only    = module.config.human_users_only
 
   // module specific config
   boot_disk_datastore = local.datastore_ssd
   data_vm_name        = "lab-ansible-data"
-  vm_name             = "lab-ansible"
   ip_address          = lookup(local.assigned_ips, local.vm_name, null)
+  users               = local.human_users_only
+  vm_name             = "lab-ansible"
   vmid                = lookup(local.assigned_vmids, local.vm_name, null)
 
   network_config = local.ip_address == null ? null : {
@@ -46,6 +48,7 @@ module "virtual_machine" {
   proxmox_node         = local.proxmox_node
   snippets_datastore   = local.datastore_snippets
   tags                 = ["devsecops", "lab"]
+  users                = local.users
   vmid                 = local.vmid
 
   boot_disk = {
@@ -53,12 +56,4 @@ module "virtual_machine" {
     size      = 32
     ssd       = local.boot_disk_datastore == local.datastore_ssd
   }
-
-  users = [
-    {
-      ssh_authorized_keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO1NsV1++UEBvGxN4IzWleJL1mCo9+ipfJ8w1NE2pCR3 skleinjung@node"]
-      sudo     = true
-      username = "sean"
-    }
-  ]
 }

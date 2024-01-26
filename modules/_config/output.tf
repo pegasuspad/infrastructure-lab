@@ -1,3 +1,13 @@
+output "all_users" {
+  description = "Set of all user configs suitable for passing to a virtual machine module."
+  value       = local.all_users
+}
+
+output "ansible_user_only" {
+  description = "Set of  user configs suitable for passing to a virtual machine module. This set only includes the Ansible management user."
+  value       = local.ansible_user_only
+}
+
 output "config_repository" {
   description = "Name of the config repository (for use with the util-config-save module) for this environment."
   value       = local.github_config_repository_name
@@ -6,6 +16,11 @@ output "config_repository" {
 output "github_config_repository_owner" {
   description = "Name of the organization which owns the Github config repository for this environment."
   value       = local.github_config_repository_owner
+}
+
+output "human_users_only" {
+  description = "Set of  user configs suitable for passing to a virtual machine module. This set only includes the human user accounts."
+  value       = local.human_users_only
 }
 
 output "ip_addresses" {
@@ -72,8 +87,6 @@ output "proxmox_insecure" {
   description = "Whether insecure TLS (i.e. untrusted self-signed certs) are allowed in this environment."
   value       = local.proxmox_insecure
 }
-
-
 
 output "proxmox_ssh_user" {
   description = "Username for ssh authentication to the Proxmox node."
