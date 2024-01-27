@@ -1,0 +1,9 @@
+- name: Bootstrap host
+  hosts: localhost
+  roles:
+    - role: local.pegasuspad.docker
+    - role: local.pegasuspad.coder
+  vars:
+    coder_host: 10.111.1.21
+    docker_backup_repository_password: test123
+    

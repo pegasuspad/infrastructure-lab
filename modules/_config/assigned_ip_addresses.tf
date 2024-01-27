@@ -28,7 +28,7 @@ locals {
   #   - VMID: 111001<id_suffix> (i.e., the ip address, 111.001.<id_suffix>)
   #   - VMID (datadisk): 9000000000 + vmid for primary VM
   assigned_id_suffixes = {
-    21  = "lab-test-vm"
+    21  = "lab-coder"
     22  = "lab-ansible"
     23  = null
     24  = null
