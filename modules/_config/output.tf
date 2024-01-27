@@ -13,9 +13,14 @@ output "config_repository" {
   value       = local.github_config_repository_name
 }
 
-output "github_config_repository_owner" {
-  description = "Name of the organization which owns the Github config repository for this environment."
-  value       = local.github_config_repository_owner
+output "github_playbook_repository" {
+  description = "Name of the repository containing Ansible playbooks, for use with the cloudinit-ansible-auto-provision module."
+  value       = local.github_playbook_repository
+}
+
+output "github_repository_owner" {
+  description = "Name of the organization which owns the Github repositories for this environment."
+  value       = local.github_repository_owner
 }
 
 output "human_users_only" {

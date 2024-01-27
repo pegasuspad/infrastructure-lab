@@ -9,5 +9,5 @@ terraform {
 
 # GITHUB_TOKEN must be set in the environment
 provider "github" {
-  owner = module.environment.github_config_repository_owner
+  owner = module.environment.github_repository_owner
 }
