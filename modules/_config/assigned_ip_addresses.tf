@@ -30,7 +30,7 @@ locals {
   assigned_id_suffixes = {
     21  = "lab-coder"
     22  = "lab-ansible"
-    23  = null
+    23  = "lab-nginx"
     24  = null
     25  = null
     26  = null

@@ -40,9 +40,13 @@ Ansible provisioning changes before they are promoted to another environment.
 
 Creates the data VM for the `lab-ansible` resource. This is used to persist Ansible configuration, .ssh keys, and other resources for the lab-ansible node.
 
-### lab-coder-vm [WIP]
+### lab-coder-vm (WIP)
 
 Creates a VM to run [Coder](https://coder.com/). This VM is currently being used to test a new mechanism for provisioning Dockerized applications.
+
+### lab-nginx-vm (WIP)
+
+Creates a VM to run an nginx proxy for other lab services.
 
 ### proxmox-os-images
 
