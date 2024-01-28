@@ -30,24 +30,36 @@ module "config" {
   source = "../_config"
 }
 
+module "ansible" {
+  source = "github.com/pegasuspad/tf-modules.git//modules/cloudinit-ansible-auto-provision?ref=main"
+
+  host_name    = local.vm_name
+  repository   = local.playbook_repository
+  vault_secret = var.ansible_vault_secret
+
+  galaxy_collections = [
+    "git+https://github.com/pegasuspad/ansible-roles.git,main",
+    "community.docker:>=3.6.0"
+  ]
+
+  galaxy_roles = [
+    "geerlingguy.docker,7.0.1",
+    "geerlingguy.pip,2.2.0",
+    "stefangweichinger.ansible_rclone,0.1.2"
+  ]
+}
+
 # next step -- download proxies from ac onfig repo? figure out lets encrypt? in docker?!
 # https://www.nginx.com/blog/deploying-nginx-nginx-plus-docker/
 # also allow hard-coding a mac address, so the dhcp lease persists
 # assign vmid without an ip?
-
-module "harbormaster" {
-  source = "github.com/pegasuspad/tf-modules.git//modules/cloudinit-harbormaster-install?ref=main"
-
-  host_name  = "lab-nginx"
-  repository = "https://github.com/pegasuspad/infrastructure-lab-harbormaster.git"
-}
 
 module "virtual_machine" {
   source = "github.com/pegasuspad/tf-modules.git//modules/proxmox-virtual-machine?ref=main"
 
   boot_iso_id          = local.iso_ids.ubuntu_2204_20240126
   cloud_init_datastore = local.datastore_cloudinit
-  cloud_init_tasks     = module.harbormaster.tasks
+  cloud_init_tasks     = [ansible.task]
   memory               = 2048
   name                 = local.vm_name
   network_config       = local.network_config
