@@ -1,0 +1,7 @@
+- name: lab-nginx
+  hosts: localhost
+  tasks:
+    - name: Install NGINX
+      ansible.builtin.include_role:
+        name: nginxinc.nginx
+    

@@ -3,7 +3,8 @@ locals {
     "10.111.1.1"   = "opnsense"
     "10.111.1.2"   = "pihole-01"
     "10.111.1.3"   = "pihole-02"
-    "10.111.1.5"   = "proxy"
+    "10.111.1.5"   = "proxy" # combined
+    "10.111.1.6"   = "proxy-filtered" # non-lab only
     "10.111.1.10"  = "proxmox-optiplex"
     "10.111.1.11"  = "proxmox-typhon"
     "10.111.1.201" = "archon-04"
@@ -17,6 +18,7 @@ locals {
     "10.111.1.209" = "terraform-state"
     "10.111.1.210" = "collabora-code"
     "10.111.1.211" = "coder-blue"
+    "10.111.1.212" = "lab-proxy"
   }
   
   # Reserved: 1-20
@@ -30,7 +32,7 @@ locals {
   assigned_id_suffixes = {
     21  = "lab-coder"
     22  = "lab-ansible"
-    23  = "lab-nginx"
+    23  = null
     24  = null
     25  = null
     26  = null

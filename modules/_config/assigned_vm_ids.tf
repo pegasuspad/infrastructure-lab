@@ -24,6 +24,8 @@ locals {
     921110 = "terraform-state-disks"
     929000 = "coder-disks"
     942100 = "freshrss-disks"
+    # not legacy, but ... manual
+    5000000 = "lab-proxy"
   }
 
   # add data vm and legacy vmid assignments
