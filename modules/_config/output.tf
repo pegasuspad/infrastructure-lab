@@ -13,6 +13,11 @@ output "config_repository" {
   value       = local.github_config_repository_name
 }
 
+output "github_harbormaster_repository_url" {
+  description = "Name of the repository containing Harbormaster app configurations, for use with the cloudinit-harbormaster-install module."
+  value       = local.github_harbormaster_repository_url
+}
+
 output "github_playbook_repository" {
   description = "Name of the repository containing Ansible playbooks, for use with the cloudinit-ansible-auto-provision module."
   value       = local.github_playbook_repository

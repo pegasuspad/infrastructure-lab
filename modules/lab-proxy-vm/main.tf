@@ -30,10 +30,7 @@ module "config" {
   source = "../_config"
 }
 
-# nextcloud is broken since proxy change -- no wopi connectivity
-# need to setup lab vm to use nginx and no docker. doing it in swarmless docker sucks
 # nextcloud - cron broken
-# nextcloud office - out of date
 # assign vmid without an ip?
 
 module "ansible" {
