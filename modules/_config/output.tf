@@ -3,6 +3,11 @@ output "all_users" {
   value       = local.all_users
 }
 
+output "ansible_control_node_cert" {
+  description = "Full path to the cacert file need to verify the ansible controller webhook server"
+  value       = local.ansible_control_node_cert
+}
+
 output "ansible_control_node_url" {
   description = "Base URL of the Ansible control node, used to trigger VM provisioning"
   value       = local.ansible_control_node_url

@@ -1,6 +1,5 @@
 locals {
   // extract useful global config values
-  assigned_ips            = module.config.ip_addresses
   assigned_vmids          = module.config.vmids
   config_repository       = module.config.config_repository
   datastore_cloudinit     = module.config.proxmox_datastore_hdd
@@ -15,7 +14,6 @@ locals {
   // module specific config
   boot_disk_datastore = local.datastore_ssd
   data_vm_name        = "lab-ansible-data"
-  ip_address          = lookup(local.assigned_ips, local.vm_name, null)
   admin_username      = "ops"
   users               = [
     {
@@ -26,12 +24,6 @@ locals {
   ]
   vm_name             = "lab-ansible"
   vmid                = lookup(local.assigned_vmids, local.vm_name, null)
-
-  network_config = local.ip_address == null ? null : {
-    ip_address        = local.ip_address
-    gateway           = "10.111.1.1"
-    dns_search_domain = "home.pegasuspad.com"
-  }
 
   install_ansible_task = {
     apt_sources = {
@@ -58,8 +50,8 @@ locals {
       "cd /run",
       "git clone '${local.playbook_repository}' ansible-bootstrap",
       "cd ansible-bootstrap",
-      "ansible-galaxy install -r requirements.yml",
-      "ansible-playbook -i inventory -l '${local.vm_name}' playbook.yml >>/var/log/ansible-bootstrap.log 2>&1",
+      "ansible-galaxy install -r project/requirements.yml",
+      "ansible-playbook -i inventory -l '${local.vm_name}' --vault-id lab@/var/lib/ansible/vault-password project/playbook.yml >>/var/log/ansible-bootstrap.log 2>&1",
       "rm -rf /run/ansible-bootstrap"
     ],
     write_files = [
@@ -91,8 +83,8 @@ module "virtual_machine" {
   cloud_init_datastore = local.datastore_cloudinit
   cloud_init_tasks     = [module.attached_disk_config.cloud_init_task, local.install_ansible_task, local.bootstrap_ansible_task]
   data_disk_config     = module.attached_disk_config.data.attached_disks
+  mac_address          = "aa:28:91:f5:3d:16"
   name                 = local.vm_name
-  network_config       = local.network_config
   proxmox_node         = local.proxmox_node
   snippets_datastore   = local.datastore_snippets
   tags                 = ["devsecops", "lab"]
