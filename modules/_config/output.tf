@@ -3,6 +3,16 @@ output "all_users" {
   value       = local.all_users
 }
 
+output "ansible_control_node_url" {
+  description = "Base URL of the Ansible control node, used to trigger VM provisioning"
+  value       = local.ansible_control_node_url
+}
+
+output "ansible_playbook_repository" {
+  description = "URL of the repository containing Ansible playbooks"
+  value       = local.ansible_playbook_repository
+}
+
 output "ansible_user_only" {
   description = "Set of  user configs suitable for passing to a virtual machine module. This set only includes the Ansible management user."
   value       = local.ansible_user_only
@@ -16,11 +26,6 @@ output "config_repository" {
 output "github_harbormaster_repository_url" {
   description = "Name of the repository containing Harbormaster app configurations, for use with the cloudinit-harbormaster-install module."
   value       = local.github_harbormaster_repository_url
-}
-
-output "github_playbook_repository" {
-  description = "Name of the repository containing Ansible playbooks, for use with the cloudinit-ansible-auto-provision module."
-  value       = local.github_playbook_repository
 }
 
 output "github_repository_owner" {
