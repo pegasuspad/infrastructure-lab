@@ -1,4 +1,4 @@
-# infrastructure-lab
+# lab-terraform
 
 Terraform module defining the Pegasus homelab infrastructure.
 
