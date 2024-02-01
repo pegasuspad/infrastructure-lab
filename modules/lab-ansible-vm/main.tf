@@ -6,10 +6,11 @@ locals {
   datastore_snippets      = module.config.proxmox_datastore_snippets
   datastore_ssd           = module.config.proxmox_datastore_ssd
   harbormaster_repository = module.config.github_harbormaster_repository_url
-  playbook_repository     = module.config.ansible_playbook_repository
-  iso_ids                 = module.config.iso_ids
-  proxmox_node            = module.config.proxmox_default_node
   human_users_only        = module.config.human_users_only
+  iso_ids                 = module.config.iso_ids
+  playbook_repository     = module.config.ansible_playbook_repository
+  proxmox_node            = module.config.proxmox_default_node
+  vault_repository        = module.config.ansible_vault_repository
 
   // module specific config
   boot_disk_datastore = local.datastore_ssd
@@ -46,17 +47,26 @@ locals {
   # checkout our ansible repository, and run the playbook against this host one time
   # it is expected that the playbook will perform any configuration necessary for future runs
   bootstrap_ansible_task = {
-    runcmd = [
-      "cd /run",
-      "git clone '${local.playbook_repository}' ansible-bootstrap",
-      "cd ansible-bootstrap",
-      "ansible-galaxy install -r project/requirements.yml",
-      "ansible-playbook -i inventory -l '${local.vm_name}' --vault-id lab@/var/lib/ansible/vault-password project/playbook.yml >>/var/log/ansible-bootstrap.log 2>&1",
-      "rm -rf /run/ansible-bootstrap"
-    ],
     write_files = [
       {
-        content = "export PROJECT_REPOSITORY_URL=${local.playbook_repository}"
+        content     = file("${path.module}/files/bootstrap.sh")
+        owner       = "root:root"
+        path        = "/usr/local/bin/bootstrap.sh",
+        permissions = "0755"
+      },
+      {
+        content = <<-EOT
+          # PROJECT_REPOSITORY_URL: url of the ansible repository
+          export PROJECT_REPOSITORY_URL=${local.playbook_repository}
+
+          # VAULT_REPOSITORY_URL: url of the repository containing the Ansible vault
+          export VAULT_REPOSITORY_URL=${local.vault_repository}
+
+          export HOST_NAME="${local.vm_name}"
+          export WORKSPACE_PATH=$${HOME}/workspace
+          export PROJECT_PATH="$${WORKSPACE_PATH}/checkout"
+          export VAULT_PATH="$${WORKSPACE_PATH}/vault"
+          EOT
         owner   = "root:root"
         path    = "/etc/ansible-runner/environment.sh"
         permissions = "0755"

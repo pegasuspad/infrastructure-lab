@@ -12,6 +12,14 @@ Terraform module defining the Pegasus homelab infrastructure.
 
 - Module names ending in `-vm` create a Proxmox VM. The VM name is the module name, excluding this suffix.
 
+### Ansible Control Node
+
+- Bootstrap: manually generate key, vault-password file, and TLS certs; store in /var/lib/ansible which is a persistent disk
+- After VM (re)creation, run /usr/local/bin/bootstrap.sh to setup keys and ansible environment
+- It runs a webhook server which receives `provision` requests for hosts, and then runs playbook. Terraform invokes for new VMs
+- Uses ansible-runner for invoking ansible, which has implications for dir structure
+- ssh-agent - login & start, automation uses it thereafter. must be restarted when server rebooted or recreated
+
 ## Modules
 
 ### _config

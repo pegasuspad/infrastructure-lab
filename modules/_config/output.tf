@@ -23,6 +23,11 @@ output "ansible_user_only" {
   value       = local.ansible_user_only
 }
 
+output "ansible_vault_repository" {
+  description = "URL of the repository containing the Ansible vault"
+  value       = local.ansible_vault_repository
+}
+
 output "config_repository" {
   description = "Name of the config repository (for use with the util-config-save module) for this environment."
   value       = local.github_config_repository_name
