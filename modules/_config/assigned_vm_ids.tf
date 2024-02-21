@@ -26,6 +26,8 @@ locals {
     942100 = "freshrss-disks"
     # not legacy, but ... manual
     5000000 = "lab-proxy"
+    5000001 = "lab-certbot"
+    95000001 = "lab-certbot-data"
   }
 
   # add data vm and legacy vmid assignments
